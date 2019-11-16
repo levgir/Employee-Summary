@@ -1,19 +1,24 @@
 const inquirer = require("inquirer");
 const generateHTML = require("./generateHTML");
 const Manager = require("./Manager");
-const engineerClass = require("./Engineer");
-const internClass = require("./Intern");
-const employeeClass = require("./Employee");
+const Engineer = require("./Engineer");
+const Intern = require("./Intern");
+const Employee = require("./Employee");
 const teamMembers = [];
 
 
 function buildProfile() {
 
-
     // Determine what the new employee's role is
-    roleQuestion();
-        
+    start();       
 
+}
+
+function start() {
+
+    console.log("Welcome to the Employee Summary Generator. You will begin by inputting your manager's information.");
+    newManager();
+        
 }
 
 function roleQuestion() {
@@ -34,7 +39,7 @@ function roleQuestion() {
             }else{
                 newIntern();
             }
-        })
+        });
         
 }
 
@@ -67,6 +72,7 @@ function newManager() {
 
             teamMembers.push(manager);
             console.log(teamMembers);
+            addAnother();
         });
 }
 
@@ -95,10 +101,11 @@ function newEngineer() {
             }
         ])
         .then(function(data) {
-            const newEngineer = new Engineer(data.employeeName, data.employeeID, data.employeeEmail, data.engineerGitHub);
+            let engineer = new Engineer(data.employeeName, data.employeeID, data.employeeEmail, data.engineerGitHub);
 
-            teamMembers.push(newEngineer);
+            teamMembers.push(engineer);
             console.log(teamMembers);
+            addAnother();
         });
 }
 
@@ -127,10 +134,11 @@ function newIntern() {
             }
         ])
         .then(function(data) {
-            const newIntern = new Intern(data.employeeName, data.employeeID, data.employeeEmail, data.internSchool);
+            let intern = new Intern(data.employeeName, data.employeeID, data.employeeEmail, data.internSchool);
 
-            teamMembers.push(newIntern);
+            teamMembers.push(intern);
             console.log(teamMembers);
+            addAnother();
         });
 }
 
@@ -146,7 +154,7 @@ function addAnother() {
     ])
     .then(function(data) {
         if(data.addAnother === "Yes") {
-            buildProfile();
+            roleQuestion();
         }else{
             return
         }
