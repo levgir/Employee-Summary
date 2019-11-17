@@ -4,7 +4,9 @@ const Manager = require("./Manager");
 const Engineer = require("./Engineer");
 const Intern = require("./Intern");
 const Employee = require("./Employee");
-const teamMembers = [];
+const managerList = require("./data/managerList");
+const engineerList = require("./data/engineerList");
+const internList = require("./data/internList");
 
 
 function buildProfile() {
@@ -70,7 +72,7 @@ function newManager() {
         .then(function(data) {
             let manager = new Manager(data.employeeName, data.employeeID, data.employeeEmail, data.managerOfficeNumber);
 
-            teamMembers.push(manager);
+            managerList.push(manager);
             console.log(teamMembers);
             addAnother();
         });
@@ -103,7 +105,7 @@ function newEngineer() {
         .then(function(data) {
             let engineer = new Engineer(data.employeeName, data.employeeID, data.employeeEmail, data.engineerGitHub);
 
-            teamMembers.push(engineer);
+            engineerList.push(engineer);
             console.log(teamMembers);
             addAnother();
         });
@@ -136,7 +138,7 @@ function newIntern() {
         .then(function(data) {
             let intern = new Intern(data.employeeName, data.employeeID, data.employeeEmail, data.internSchool);
 
-            teamMembers.push(intern);
+            internList.push(intern);
             console.log(teamMembers);
             addAnother();
         });
