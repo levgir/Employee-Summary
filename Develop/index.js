@@ -4,9 +4,8 @@ const Manager = require("./Manager");
 const Engineer = require("./Engineer");
 const Intern = require("./Intern");
 const Employee = require("./Employee");
-const managerList = require("./data/managerList");
-const engineerList = require("./data/engineerList");
-const internList = require("./data/internList");
+const employeeList = require("./employeeList");
+const fs = require("fs");
 
 
 function buildProfile() {
@@ -72,8 +71,7 @@ function newManager() {
         .then(function(data) {
             let manager = new Manager(data.employeeName, data.employeeID, data.employeeEmail, data.managerOfficeNumber);
 
-            managerList.push(manager);
-            console.log(teamMembers);
+            employeeList.push(manager);
             addAnother();
         });
 }
@@ -105,8 +103,7 @@ function newEngineer() {
         .then(function(data) {
             let engineer = new Engineer(data.employeeName, data.employeeID, data.employeeEmail, data.engineerGitHub);
 
-            engineerList.push(engineer);
-            console.log(teamMembers);
+            employeeList.push(engineer);
             addAnother();
         });
 }
@@ -138,8 +135,7 @@ function newIntern() {
         .then(function(data) {
             let intern = new Intern(data.employeeName, data.employeeID, data.employeeEmail, data.internSchool);
 
-            internList.push(intern);
-            console.log(teamMembers);
+            employeeList.push(intern);
             addAnother();
         });
 }
@@ -158,10 +154,42 @@ function addAnother() {
         if(data.addAnother === "Yes") {
             roleQuestion();
         }else{
-            return
+            createFile("index.html", generateHTML.generateHTML());
+            populateData();
         }
     });
 } 
+
+function createFile(html, data) {
+    fs.writeFile(html, data, function(err) {
+        if (err) {
+            return Error;
+        }
+    });
+}
+
+function addToFile (html, data) {
+    fs.appendFile(html, data, function(err) {
+        if (err) {
+            return Error
+        }
+    });
+}
+
+function populateData() {
+    
+    employeeList.forEach(function (data) {
+        addToFile("index.html", generateHTML.addManagerCard(data));
+    });
+
+    closeFile();
+
+};
+
+function closeFile(){
+    addToFile("index.html", generateHTML.closeHTML());
+}
+
 
 buildProfile();
 
