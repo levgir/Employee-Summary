@@ -10,6 +10,7 @@ const fs = require("fs");
 
 function buildProfile() {
     console.log("Welcome to the Employee Summary Generator. You will begin by inputting your manager's information.");
+    createFile("team.html", generateHTML.generateHTML());
     newManager();      
 }
 
@@ -20,13 +21,11 @@ function roleQuestion() {
                 type: "list",
                 name: "employeeRole",
                 message: "What is the new employee's role?",
-                choices: ['Manager', 'Engineer', 'Intern']
+                choices: ['Engineer', 'Intern']
             }
         ])
         .then(function (data) {
-            if (data.employeeRole === "Manager") {
-                newManager();
-            }else if (data.employeeRole === "Engineer") {
+            if (data.employeeRole === "Engineer") {
                 newEngineer();
             }else{
                 newIntern();
@@ -62,6 +61,9 @@ function newManager() {
             let manager = new Manager(data.employeeName, data.employeeID, data.employeeEmail, data.managerOfficeNumber);
 
             employeeList.push(manager);
+            employeeList.forEach(function (data) {
+                addToFile("team.html", generateHTML.addManagerCard(data));
+            });
             addAnother();
         });
 }
@@ -144,7 +146,7 @@ function addAnother() {
         if(data.addAnother === "Yes") {
             roleQuestion();
         }else{
-            createFile("index.html", generateHTML.generateHTML());
+            
             populateData();
         }
     });
@@ -169,21 +171,20 @@ function addToFile (html, data) {
 function populateData() {
     employeeList.forEach(function (data) {
         switch (data.role) {
-            case "Manager":
-                addToFile("index.html", generateHTML.addManagerCard(data));
+            case "Intern":
+                addToFile("team.html", generateHTML.addInternCard(data));
               break;
             case "Engineer":
-                addToFile("index.html", generateHTML.addEngineerCard(data));
+                addToFile("team.html", generateHTML.addEngineerCard(data));
               break;
             default:
-                addToFile("index.html", generateHTML.addInternCard(data));
               break;
         }
     });
 };
 
 function closeFile(){
-    addToFile("index.html", generateHTML.closeHTML());
+    addToFile("team.html", generateHTML.closeHTML());
 }
 
 
