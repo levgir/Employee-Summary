@@ -9,17 +9,8 @@ const fs = require("fs");
 
 
 function buildProfile() {
-
-    // Determine what the new employee's role is
-    start();       
-
-}
-
-function start() {
-
     console.log("Welcome to the Employee Summary Generator. You will begin by inputting your manager's information.");
-    newManager();
-        
+    newManager();      
 }
 
 function roleQuestion() {
@@ -40,8 +31,7 @@ function roleQuestion() {
             }else{
                 newIntern();
             }
-        });
-        
+        });       
 }
 
 function newManager() {
@@ -177,13 +167,19 @@ function addToFile (html, data) {
 }
 
 function populateData() {
-    
     employeeList.forEach(function (data) {
-        addToFile("index.html", generateHTML.addManagerCard(data));
+        switch (data.role) {
+            case "Manager":
+                addToFile("index.html", generateHTML.addManagerCard(data));
+              break;
+            case "Engineer":
+                addToFile("index.html", generateHTML.addEngineerCard(data));
+              break;
+            default:
+                addToFile("index.html", generateHTML.addInternCard(data));
+              break;
+        }
     });
-
-    closeFile();
-
 };
 
 function closeFile(){
